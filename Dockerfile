@@ -40,6 +40,9 @@ COPY serverless.yml .
 ## Deploy
 FROM node:16 as deploy
 
+ARG AWS_KEY
+ARG AWS_SECRET
+
 WORKDIR /app
 
 COPY --from=php /var/www/app/ /app
