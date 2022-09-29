@@ -22,12 +22,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/app
 
 # Composer install
-COPY composer.* .
+COPY composer.* ./
 RUN composer install
 
 # Copy source
 COPY *.php .
-COPY .serverless .
 COPY serverless.yml .
 
 # Run Application
