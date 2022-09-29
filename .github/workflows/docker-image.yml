@@ -15,4 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag jonathanfvb/bref:$(date +%s) --build-arg AWS_KEY=${{ secrets.JHOU_AWS_KEY }} --build-arg AWS_SECRET=${{ secrets.JHOU_AWS_SECRET }}
+      run: docker build . --file Dockerfile \
+        --tag jonathanfvb/bref:$(date +%s) \
+        --build-arg "AWS_KEY=${{ secrets.JHOU_AWS_KEY }}" \
+        --build-arg "AWS_SECRET=${{ secrets.JHOU_AWS_SECRET }}"
