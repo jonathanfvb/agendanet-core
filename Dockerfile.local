@@ -21,12 +21,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/app
 
-# Composer install
-COPY composer.* ./
-RUN composer install
-
 # Copy source
-COPY *.php .
+COPY . .
 
 # Run Application
 EXPOSE 8090
