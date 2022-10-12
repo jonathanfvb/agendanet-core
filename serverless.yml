@@ -4,6 +4,8 @@ provider:
     name: aws
     region: us-east-1
     runtime: provided.al2
+    environment:
+        DB_NAME: ${ssm:/app-dev/database/name}
 
 plugins:
     - ./vendor/bref/bref
@@ -16,7 +18,7 @@ functions:
         layers:
             - ${bref:layer.php-81-fpm}
         events:
-            -   httpApi: '*'
+            - httpApi: '*'
 
 # Exclude files from deployment
 package:

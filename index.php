@@ -11,7 +11,14 @@ $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 $app->get('/api', function (Request $request, Response $response, $args) {
-    $data = ['message' => 'Hello', 'method' => 'GET', 'version' => 4];
+    $data = [
+        'message' => 'Hello', 
+        'method' => 'GET', 
+        'version' => 4,
+        'database' => [
+            'name' => $_ENV['DB_NAME'] ?? null
+        ]
+    ];
     $response->getBody()->write(json_encode($data));
     
     $out = fopen('php://stdout', 'w');
