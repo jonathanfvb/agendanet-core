@@ -2,21 +2,19 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
-/*
- |--------------------------------------------------------------------------
- | Application Routes
- |--------------------------------------------------------------------------
- |
- | Here is where you can register all of the routes for an application.
- | It is a breeze. Simply tell Lumen the URIs it should respond to
- | and give it the Closure to call when that URI is requested.
- |
- */
+use Illuminate\Http\Request;
+use GuzzleHttp\Psr7\Request As PsrRequest;
+use Agendanet\App\Controllers\PostController;
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->get('/', function (Request $request) {
+    return 'ok';
 });
 
-$router->group(['prefix' => 'api'], function ($router) {
-    $router->post('schedules', 'PostController@create');
+$router->post('/schedules', function (Request $request) {
+    $psrRequest = new PsrRequest('POST', '/schedules');
+    $psrRequest->getBody()->write(json_encode($request->toArray()));
+    
+    $postController = app(PostController::class);
+    $response = $postController->handler($psrRequest);
+    return $response;
 });

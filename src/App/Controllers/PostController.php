@@ -3,8 +3,8 @@
 namespace Agendanet\App\Controllers;
 
 use Exception;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\RequestInterface as Request;
+use GuzzleHttp\Psr7\Response;
 use Agendanet\App\Commons\Http\Exceptions\BadRequestException;
 use Agendanet\App\Commons\Http\Exceptions\BusinessException;
 use Agendanet\App\Commons\Http\Response\JsonResponse;
@@ -13,6 +13,7 @@ use Agendanet\Domain\UseCase\CreateSchedule;
 
 class PostController
 {
+    private Response $response;
     private CreateSchedule $createSchedule;
     
     public function __construct(CreateSchedule $createSchedule)
@@ -20,25 +21,26 @@ class PostController
         $this->createSchedule = $createSchedule;
     }
     
-    public function handler(Request $request, Response $response)
+    public function handler(Request $request)
     {
-        try {            
+        try {
+            $this->response = new Response();
             $createScheduleRequest = $this->mapHttpRequestToUseCaseRequest(
                 $request
             );
             $payload = $this->createSchedule->execute($createScheduleRequest);
-            $response->getBody()->write(json_encode($payload));
+            $this->response->getBody()->write(json_encode($payload));
         } catch (BusinessException $e) {
-            $response->getBody()->write(json_encode($e->toArray()));
-            $response = $response->withStatus($e->getCode());
+            $this->response->getBody()->write(json_encode($e->toArray()));
+            $this->response = $this->response->withStatus($e->getCode());
         } catch (Exception $e) {
-            $response->getBody()->write(json_encode([
+            $this->response->getBody()->write(json_encode([
                 'code' => 500,
                 'message' => $e->getMessage()
             ]));
-            $response = $response->withStatus($e->getCode());
+            $this->response = $this->response->withStatus($e->getCode());
         } finally {
-            return JsonResponse::send($response);
+            return JsonResponse::send($this->response);
         }
     }
     

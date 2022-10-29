@@ -9,6 +9,8 @@
 	},
 	"require" : {
 		"laravel/lumen": "^9.0",
-		"guzzlehttp/guzzle": "^7.0"
+		"guzzlehttp/guzzle": "^7.0",
+		"symfony/psr-http-message-bridge": "^2.1",
+		"zendframework/zend-diactoros": "^1.3"
 	}
 }
