@@ -1,10 +1,10 @@
 <?php
 
-namespace Agendanet\App\Http\Exceptions;
+namespace Agendanet\App\Commons\Http\Exceptions;
 
 use Exception;
 
-class BaseException extends Exception
+class BusinessException extends Exception
 {
     protected $message;
     

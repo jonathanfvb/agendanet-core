@@ -5,10 +5,10 @@ namespace Agendanet\App\Controllers;
 use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Agendanet\App\Http\Response\JsonResponse;
+use Agendanet\App\Commons\Http\Response\JsonResponse;
 use Agendanet\Domain\UseCase\CreateSchedule;
-use Agendanet\App\Http\Exceptions\BadRequestException;
-use Agendanet\App\Http\Exceptions\BaseException;
+use Agendanet\App\Commons\Http\Exceptions\BadRequestException;
+use Agendanet\App\Commons\Http\Exceptions\BusinessException;
 use Agendanet\Domain\DTO\CreateScheduleRequest;
 
 class PostController
@@ -28,19 +28,21 @@ class PostController
             );
             $payload = $this->createSchedule->execute($createScheduleRequest);
             $response->getBody()->write(json_encode($payload));
-        } catch (BaseException $e) {
+        } catch (BusinessException $e) {
             $response->getBody()->write(json_encode($e->toArray()));
+            $response = $response->withStatus($e->getCode());
         } catch (Exception $e) {
             $response->getBody()->write(json_encode([
                 'code' => 500,
                 'message' => $e->getMessage()
             ]));
+            $response = $response->withStatus($e->getCode());
         } finally {
             return JsonResponse::send($response);
-        }        
+        }
     }
     
-    private function mapHttpRequestToUseCaseRequest(Request $request)
+    private function mapHttpRequestToUseCaseRequest(Request $request) : CreateScheduleRequest
     {
         $params = json_decode($request->getBody()->getContents(), true);
         if (empty($params['user_phone'])) {

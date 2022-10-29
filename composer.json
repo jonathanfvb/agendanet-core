@@ -1,15 +1,15 @@
 {
-	"name": "jonathanfvb/agendanet-core",
-	"type": "project",
-	"autoload": {
-        "psr-4": {
-        	"Agendanet\\": "src/"
-        }
-    },
-    "require": {
-        "slim/slim": "^4.10",
-        "slim/psr7": "^1.5",
-		"php-di/slim-bridge": "^3.2",
-		"bref/bref": "^1.7"
-    }
+	"name" : "jonathanfvb/agendanet-core",
+	"type" : "project",
+	"autoload" : {
+		"psr-4" : {
+			"Agendanet\\" : "src/"
+		}
+	},
+	"require" : {
+		"slim/slim" : "^4.10",
+		"slim/psr7" : "^1.5",
+		"php-di/slim-bridge" : "^3.2",
+		"bref/bref" : "^1.7"
+	}
 }

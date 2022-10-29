@@ -23,5 +23,5 @@ $app->post('/schedules', function (Request $request, Response $response, $args) 
     $controller = $this->get('PostController');
     return $controller->handler($request, $response);
 });
-
+    
 $app->run();

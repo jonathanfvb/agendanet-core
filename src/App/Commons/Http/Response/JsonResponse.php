@@ -1,6 +1,6 @@
 <?php
 
-namespace Agendanet\App\Http\Response;
+namespace Agendanet\App\Commons\Http\Response;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
