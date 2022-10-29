@@ -5,15 +5,15 @@ namespace Agendanet\App\Controllers;
 use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Agendanet\App\Commons\Http\Response\JsonResponse;
-use Agendanet\Domain\UseCase\CreateSchedule;
 use Agendanet\App\Commons\Http\Exceptions\BadRequestException;
 use Agendanet\App\Commons\Http\Exceptions\BusinessException;
+use Agendanet\App\Commons\Http\Response\JsonResponse;
 use Agendanet\Domain\DTO\CreateScheduleRequest;
+use Agendanet\Domain\UseCase\CreateSchedule;
 
 class PostController
 {
-    private $createSchedule;
+    private CreateSchedule $createSchedule;
     
     public function __construct(CreateSchedule $createSchedule)
     {
