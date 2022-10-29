@@ -3,12 +3,12 @@
 	"type" : "project",
 	"autoload" : {
 		"psr-4" : {
-			"Agendanet\\" : "src/"
+			"Agendanet\\" : "src/",
+			"App\\": "app/"
 		}
 	},
 	"require" : {
-		"slim/slim" : "^4.10",
-		"slim/psr7" : "^1.5",
-		"php-di/slim-bridge" : "^3.2"
+		"laravel/lumen": "^9.0",
+		"guzzlehttp/guzzle": "^7.0"
 	}
 }

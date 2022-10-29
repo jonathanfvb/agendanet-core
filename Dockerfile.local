@@ -26,4 +26,4 @@ COPY . .
 
 # Run Application
 EXPOSE 8090
-CMD ["php", "-S", "0.0.0.0:8090"]
+CMD ["php", "-S", "0.0.0.0:8090", "-t", "public"]
