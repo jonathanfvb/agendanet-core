@@ -46,3 +46,8 @@ Após isso acesse a aplicação
 http://localhost:8090
 ```
 
+# Executando os testes unitários
+Para executar os testes unitário execute o comando
+```
+make tests
+```
