@@ -1,16 +1,16 @@
 <?php
 
-namespace Agendanet\Domain\DTO;
+namespace Agendanet\Domain\Schedules\DTO;
 
 class CreateScheduleRequest
 {
-    public $userPhone;
+    public string $userPhone;
     
-    public $userName;
+    public string $userName;
     
-    public $doctorId;
+    public string $doctorId;
     
-    public $scheduleDatetime;
+    public string $scheduleDatetime;
     
     public function __construct(
         string $userPhone,

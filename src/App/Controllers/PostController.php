@@ -8,21 +8,20 @@ use Psr\Http\Message\RequestInterface;
 use Agendanet\App\Commons\Http\Exceptions\BadRequestException;
 use Agendanet\App\Commons\Http\Exceptions\BusinessException;
 use Agendanet\App\Commons\Http\Response\JsonResponse;
-use Agendanet\Domain\DTO\CreateScheduleRequest;
-use Agendanet\Domain\UseCase\CreateSchedule;
+use Agendanet\Domain\Schedules\DTO\CreateScheduleRequest;
+use Agendanet\Domain\Schedules\UseCase\CreateScheduleUC;
 
 class PostController
 {
     private ResponseInterface $response;
-    private CreateSchedule $createSchedule;
+    private CreateScheduleUC $createScheduleUC;
     
     public function __construct(
         ResponseInterface $response,
-        CreateSchedule $createSchedule
-    )
-    {
+        CreateScheduleUC $createScheduleUC
+    ) {
         $this->response = $response;
-        $this->createSchedule = $createSchedule;
+        $this->createScheduleUC = $createScheduleUC;
     }
     
     public function handler(RequestInterface $request)
@@ -31,8 +30,8 @@ class PostController
             $createScheduleRequest = $this->mapHttpRequestToUseCaseRequest(
                 $request
             );
-            $payload = $this->createSchedule->execute($createScheduleRequest);
-            $this->response->getBody()->write(json_encode($payload));
+            $payload = $this->createScheduleUC->execute($createScheduleRequest);
+            $this->response->getBody()->write(json_encode($payload->toArray()));
         } catch (BusinessException $e) {
             $this->response->getBody()->write(json_encode($e->toArray()));
             $this->response = $this->response->withStatus($e->getCode());
@@ -47,8 +46,9 @@ class PostController
         }
     }
     
-    private function mapHttpRequestToUseCaseRequest(RequestInterface $request) : CreateScheduleRequest
-    {
+    private function mapHttpRequestToUseCaseRequest(
+        RequestInterface $request
+    ): CreateScheduleRequest {
         $params = json_decode($request->getBody()->getContents(), true);
         if (empty($params['user_phone'])) {
             throw new BadRequestException('user_phone is a mandatory parameter');
@@ -68,6 +68,6 @@ class PostController
             $params['user_name'],
             $params['doctor_id'],
             $params['schedule_datetime']
-            );
+        );
     }
 }
