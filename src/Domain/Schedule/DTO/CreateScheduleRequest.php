@@ -1,10 +1,8 @@
 <?php
 
-namespace Agendanet\Domain\Schedules\DTO;
+namespace Agendanet\Domain\Schedule\DTO;
 
-use Agendanet\App\Commons\DTO\BaseDTO;
-
-class CreateScheduleResponse extends BaseDTO
+class CreateScheduleRequest
 {
     public string $userPhone;
     
@@ -14,19 +12,15 @@ class CreateScheduleResponse extends BaseDTO
     
     public string $scheduleDatetime;
     
-    public string $createdAt;
-    
     public function __construct(
         string $userPhone,
         string $userName,
         string $doctorId,
-        string $scheduleDatetime,
-        string $createdAt
+        string $scheduleDatetime
     ) {
         $this->userPhone = $userPhone;
         $this->userName = $userName;
         $this->doctorId = $doctorId;
         $this->scheduleDatetime = $scheduleDatetime;
-        $this->createdAt = $createdAt;
     }
 }
