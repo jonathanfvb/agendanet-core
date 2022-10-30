@@ -8,8 +8,8 @@ use Psr\Http\Message\RequestInterface;
 use Agendanet\App\Commons\Http\Exceptions\BadRequestException;
 use Agendanet\App\Commons\Http\Exceptions\BusinessException;
 use Agendanet\App\Commons\Http\Response\JsonResponse;
-use Agendanet\Domain\Schedules\DTO\CreateScheduleRequest;
-use Agendanet\Domain\Schedules\UseCase\CreateScheduleUC;
+use Agendanet\Domain\Schedule\DTO\CreateScheduleRequest;
+use Agendanet\Domain\Schedule\UseCase\CreateScheduleUC;
 
 class PostController
 {

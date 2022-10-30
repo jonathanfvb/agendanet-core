@@ -3,17 +3,26 @@
 namespace Tests\Unit\App\Controllers;
 
 use Agendanet\App\Controllers\PostController;
-use Agendanet\Domain\Schedules\UseCase\CreateScheduleUC;
-use GuzzleHttp\Psr7\Request;
+use Agendanet\Domain\Doctor\Entity\Doctor;
+use Agendanet\Domain\Doctor\Repository\Contract\DoctorRepositoryInterface;
+use Agendanet\Domain\Schedule\UseCase\CreateScheduleUC;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use GuzzleHttp\Psr7\Stream;
-use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 
 final class PostControllerTest extends TestCase
 {
+    private DoctorRepositoryInterface $doctorRepositoryMock;
+    
+    public function setUp(): void
+    {
+        $this->doctorRepositoryMock = $this->createMock(
+            DoctorRepositoryInterface::class
+        );
+        parent::setUp();
+    }
+    
     public function testWhenUserPhoneIsNotSentShouldReturnHttp400()
     {
         // ARRANGE
@@ -101,6 +110,10 @@ final class PostControllerTest extends TestCase
     public function testWhenSuccessPayloadIsSentShouldReturnHttp200()
     {
         // ARRANGE
+        $this->doctorRepositoryMock
+            ->method('findByDoctorId')
+            ->willReturn(new Doctor('aaa-123'));
+        
         $postController = $this->getPostController();
         $payload = $this->getSuccessPayload();
         $request = $this->getRequest($payload);
@@ -122,7 +135,7 @@ final class PostControllerTest extends TestCase
     {
         return new PostController(
             new Response(),
-            new CreateScheduleUC()
+            new CreateScheduleUC($this->doctorRepositoryMock)
         );
     }
     
