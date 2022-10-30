@@ -49,7 +49,7 @@ class PostController
     private function mapHttpRequestToUseCaseRequest(
         RequestInterface $request
     ): CreateScheduleRequest {
-        $params = json_decode($request->getBody()->getContents(), true);
+        $params = json_decode($request->getBody()->__toString(), true);
         if (empty($params['user_phone'])) {
             throw new BadRequestException('user_phone is a mandatory parameter');
         }

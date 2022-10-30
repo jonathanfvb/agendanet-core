@@ -129,7 +129,7 @@ final class PostControllerTest extends TestCase
     private function getRequest(array $payload): RequestInterface
     {
         $stream = $this->createMock(StreamInterface::class);
-        $stream->method('getContents')->willReturn(json_encode($payload));
+        $stream->method('__toString')->willReturn(json_encode($payload));
         
         $request = $this->createMock(RequestInterface::class);
         $request->method('getBody')->willReturn($stream);
