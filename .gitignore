@@ -6,3 +6,5 @@
 .settings
 .buildpath
 .project
+/.scannerwork/
+/.phpunit.result.cache

@@ -12,6 +12,12 @@ RUN apk update --no-cache \
 # Install PHP extensions
 RUN docker-php-ext-install intl pdo_mysql mbstring
 
+# Install xdebug
+RUN apk --no-cache add autoconf g++ make \
+	&& pecl install xdebug \
+	&& docker-php-ext-enable xdebug \
+	&& rm -rf /tmp/pear; apk del autoconf g++ make;
+
 # Clear cache
 RUN rm -rf /var/cache/apk/*
 

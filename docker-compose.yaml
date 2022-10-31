@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
-    container_name: agendanet-core
+    container_name: agendanet-schedule
     env_file:
       - .env
     ports:

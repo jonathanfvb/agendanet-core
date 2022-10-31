@@ -1,12 +1,12 @@
 <?php
 
+use Agendanet\App\Controllers\PostController;
+use Agendanet\Domain\Schedule\UseCase\CreateScheduleUC;
+use DI\Container;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
-use Agendanet\App\Controllers\PostController;
-use DI\Container;
-use Agendanet\Domain\Schedules\UseCase\CreateScheduleUC;
 
 require __DIR__ . '/vendor/autoload.php';
 
