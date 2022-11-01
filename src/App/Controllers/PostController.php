@@ -24,7 +24,7 @@ class PostController
         $this->createScheduleUC = $createScheduleUC;
     }
     
-    public function handler(RequestInterface $request)
+    public function createSchedule(RequestInterface $request)
     {
         try {
             $createScheduleRequest = $this->mapHttpRequestToUseCaseRequest(

@@ -2,9 +2,9 @@
 
 namespace Agendanet\App\Commons\DTO;
 
-use Agendanet\App\Commons\Contracts\Arrayable;
+use Agendanet\App\Commons\Contracts\ArrayableInterface;
 
-class BaseDTO implements Arrayable
+class BaseDTO implements ArrayableInterface
 {
     public function toArray(): array
     {

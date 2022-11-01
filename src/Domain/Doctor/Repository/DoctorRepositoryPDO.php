@@ -4,7 +4,6 @@ namespace Agendanet\Domain\Doctor\Repository;
 
 use Agendanet\App\Commons\Database\Database;
 use Agendanet\Domain\Doctor\Entity\Doctor;
-use Agendanet\Domain\Doctor\Repository\Contract\DoctorRepositoryInterface;
 
 class DoctorRepositoryPDO extends Database implements DoctorRepositoryInterface
 {    

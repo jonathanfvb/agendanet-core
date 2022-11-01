@@ -4,10 +4,10 @@ namespace Agendanet\Domain\Doctor\Entity;
 
 class Doctor
 {
-    public string $doctorId;
+    public string $id;
     
-    public function __construct(string $doctorId)
+    public function __construct(string $id)
     {
-        $this->doctorId = $doctorId;
+        $this->id = $id;
     }
 }

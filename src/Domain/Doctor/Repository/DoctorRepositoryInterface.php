@@ -1,6 +1,6 @@
 <?php
 
-namespace Agendanet\Domain\Doctor\Repository\Contract;
+namespace Agendanet\Domain\Doctor\Repository;
 
 use Agendanet\Domain\Doctor\Entity\Doctor;
 
