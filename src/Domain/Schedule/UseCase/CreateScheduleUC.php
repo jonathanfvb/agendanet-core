@@ -57,8 +57,8 @@ class CreateScheduleUC
         $this->request = $request;
         $this->setScheduleDateTime();
         $this->setPacient();
-        $this->doctor = $this->getDoctorById();
-        $this->doctorSchedule = $this->getDoctorScheduleByDateTime();
+        $this->setDoctor();
+        $this->setDoctorScheduleByDateTime();
         $this->validateDoctorSchedule();
         $schedule = $this->makeSchedule();
         $this->registerSchedule($schedule);
@@ -89,7 +89,7 @@ class CreateScheduleUC
         );
     }
     
-    private function getDoctorById(): Doctor
+    private function setDoctor(): void
     {
         $doctor = $this->doctorRepository->findByDoctorId(
             $this->request->doctorId
@@ -100,10 +100,10 @@ class CreateScheduleUC
             );
         }
         
-        return $doctor;
+        $this->doctor = $doctor;
     }
     
-    private function getDoctorScheduleByDateTime(): DoctorSchedule
+    private function getDoctorScheduleByDateTime(): void
     {
         $doctorSchedule = $this->doctorScheduleRepository
             ->findSchedule(
@@ -117,7 +117,7 @@ class CreateScheduleUC
             );
         }
         
-        return $doctorSchedule;
+        $this->doctorSchedule =  $doctorSchedule;
     }
     
     private function validateDoctorSchedule(): void {

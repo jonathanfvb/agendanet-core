@@ -8,3 +8,4 @@
 .project
 /.scannerwork/
 /.phpunit.result.cache
+/clover.xml
