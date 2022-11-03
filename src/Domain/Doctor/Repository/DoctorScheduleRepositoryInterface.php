@@ -11,4 +11,6 @@ interface DoctorScheduleRepositoryInterface
         string $doctorId, 
         DateTime $dateTime
     ): ?DoctorSchedule;
+    
+    public function update(DoctorSchedule $doctorSchedule): void;
 }

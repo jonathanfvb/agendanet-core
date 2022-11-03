@@ -62,6 +62,7 @@ class CreateScheduleUC
         $this->validateDoctorSchedule();
         $schedule = $this->makeSchedule();
         $this->registerSchedule($schedule);
+        $this->updateDoctorSheduleToUnavailable();
         return $this->makeResponse($schedule);
     }
     
@@ -103,7 +104,7 @@ class CreateScheduleUC
         $this->doctor = $doctor;
     }
     
-    private function getDoctorScheduleByDateTime(): void
+    private function setDoctorScheduleByDateTime(): void
     {
         $doctorSchedule = $this->doctorScheduleRepository
             ->findSchedule(
@@ -140,6 +141,12 @@ class CreateScheduleUC
     private function registerSchedule(Schedule $schedule): void
     {
         $this->scheduleRepository->create($schedule);
+    }
+    
+    private function updateDoctorSheduleToUnavailable(): void
+    {
+        $this->doctorSchedule->available = false;
+        $this->doctorScheduleRepository->update($this->doctorSchedule);
     }
     
     private function makeResponse(Schedule $schedule): CreateScheduleResponse

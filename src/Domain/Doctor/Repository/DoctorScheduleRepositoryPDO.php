@@ -6,11 +6,12 @@ use Agendanet\App\Commons\Database\Database;
 use Agendanet\Domain\Doctor\Entity\Doctor;
 use Agendanet\Domain\Doctor\Entity\DoctorSchedule;
 use DateTime;
+use Exception;
 
 class DoctorScheduleRepositoryPDO extends Database implements DoctorScheduleRepositoryInterface
 {
     public function findSchedule(
-        $doctorId, 
+        string $doctorId, 
         DateTime $dateTime
     ): ?DoctorSchedule {
         $stmt = $this->pdo->prepare(
@@ -40,5 +41,28 @@ class DoctorScheduleRepositoryPDO extends Database implements DoctorScheduleRepo
         }
         
         return null;
+    }
+
+    public function update(DoctorSchedule $doctorSchedule): void
+    {
+        $stmt = $this->pdo->prepare(
+            'UPDATE doctor_schedule 
+            SET available = :available
+            WHERE doctor_id = :doctor_id
+                    AND datetime = :datetime'
+        );
+        
+        $executed = $stmt->execute([
+            'doctor_id' => $doctorSchedule->doctor->id,
+            'datetime' => $doctorSchedule->dateTime->format('Y-m-d H:i:s'),
+            'available' => (int) $doctorSchedule->available
+        ]);
+        
+        if (!$executed) {
+            throw new Exception(
+                'Fail to update the doctor_schedule: '
+                . $stmt->errorInfo()[0]
+            );
+        }
     }
 }
