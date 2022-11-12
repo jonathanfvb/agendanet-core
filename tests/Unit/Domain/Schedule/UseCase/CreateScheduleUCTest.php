@@ -3,7 +3,7 @@
 namespace Tests\Unit\Domain\Schedule\UseCase;
 
 use Agendanet\App\Commons\Http\Exceptions\UnprocessableEntityException;
-use Agendanet\Domain\Doctor\Repository\Contract\DoctorRepositoryInterface;
+use Agendanet\Domain\Doctor\Repository\DoctorRepositoryInterface;
 use Agendanet\Domain\Schedule\DTO\CreateScheduleRequest;
 use Agendanet\Domain\Schedule\UseCase\CreateScheduleUC;
 use PHPUnit\Framework\TestCase;

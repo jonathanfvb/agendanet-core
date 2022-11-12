@@ -38,7 +38,13 @@ class CreateScheduleUC
     
     private DoctorSchedule $doctorSchedule;
     
-    
+    /**
+     * 
+     * @param DoctorRepositoryInterface $doctorRepository
+     * @param DoctorScheduleRepositoryInterface $doctorScheduleRepository
+     * @param ScheduleRepositoryInterface $scheduleRepository
+     * @param ScheduleFactoryInterface $scheduleFactory
+     */
     public function __construct(
         DoctorRepositoryInterface $doctorRepository,
         DoctorScheduleRepositoryInterface $doctorScheduleRepository,
