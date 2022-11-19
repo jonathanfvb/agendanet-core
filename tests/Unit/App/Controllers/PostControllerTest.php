@@ -4,8 +4,12 @@ namespace Tests\Unit\App\Controllers;
 
 use Agendanet\App\Controllers\PostController;
 use Agendanet\Domain\Doctor\Entity\Doctor;
+use Agendanet\Domain\Doctor\Entity\DoctorSchedule;
 use Agendanet\Domain\Doctor\Repository\DoctorRepositoryInterface;
 use Agendanet\Domain\Doctor\Repository\DoctorScheduleRepositoryInterface;
+use Agendanet\Domain\Pacient\Entity\Pacient;
+use Agendanet\Domain\Schedule\Entity\Schedule;
+use Agendanet\Domain\Schedule\Enum\ScheduleStatus;
 use Agendanet\Domain\Schedule\Factory\ScheduleFactoryInterface;
 use Agendanet\Domain\Schedule\Repository\ScheduleRepositoryInterface;
 use Agendanet\Domain\Schedule\UseCase\CreateScheduleUC;
@@ -13,10 +17,6 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
-use Agendanet\Domain\Doctor\Entity\DoctorSchedule;
-use Agendanet\Domain\Pacient\Entity\Pacient;
-use Agendanet\Domain\Schedule\Entity\Schedule;
-use Agendanet\Domain\Schedule\Enum\ScheduleStatus;
 
 final class PostControllerTest extends TestCase
 {
@@ -27,7 +27,6 @@ final class PostControllerTest extends TestCase
     private ScheduleRepositoryInterface $scheduleRepositoryMock;
     
     private ScheduleFactoryInterface $scheduleFactoryMock;
-    
     
     public function setUp(): void
     {
@@ -130,6 +129,30 @@ final class PostControllerTest extends TestCase
         $this->assertEquals($expectedBody, $response->getBody()->__toString());
     }
     
+    public function testWhenANotBusinessExceptionOccurShouldReturnHttp500()
+    {
+        // ARRANGE
+        $this->doctorRepositoryMock
+            ->method('findByDoctorId')
+            ->will($this->throwException(new \Exception('Test exception')));
+        
+        $postController = $this->getPostController();
+        $payload = $this->getSuccessPayload();
+        $request = $this->getRequest($payload);
+        
+        $expectedBody = json_encode([
+            'code' => 500,
+            'message' => 'Test exception'
+        ]);
+        
+        // ACT
+        $response = $postController->createSchedule($request);
+        
+        // ASSERT
+        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals($expectedBody, $response->getBody()->__toString());
+    }
+    
     public function testWhenSuccessPayloadIsSentShouldReturnHttp200()
     {
         // ARRANGE
@@ -180,6 +203,7 @@ final class PostControllerTest extends TestCase
     
     private function getPostController(): PostController
     {
+        
         return new PostController(
             new Response(),
             new CreateScheduleUC(

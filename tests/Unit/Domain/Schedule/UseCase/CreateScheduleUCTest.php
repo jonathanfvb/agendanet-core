@@ -10,6 +10,9 @@ use Agendanet\Domain\Schedule\Factory\ScheduleFactoryInterface;
 use Agendanet\Domain\Schedule\Repository\ScheduleRepositoryInterface;
 use Agendanet\Domain\Schedule\UseCase\CreateScheduleUC;
 use PHPUnit\Framework\TestCase;
+use Agendanet\App\Commons\Http\Exceptions\BadRequestException;
+use Agendanet\Domain\Doctor\Entity\Doctor;
+use Agendanet\Domain\Doctor\Entity\DoctorSchedule;
 
 final class CreateScheduleUCTest extends TestCase
 {
@@ -38,17 +41,84 @@ final class CreateScheduleUCTest extends TestCase
         parent::setUp();
     }
     
-    public function testWhenDoctorNotExistsShouldThrowsUnprocessableEntityException(): void
+    public function testWhenScheduleDatetimeHasIncorrectFormatShouldThrowsBadRequestException(): void
     {
         // ARRANGE
         $this->doctorRepositoryMock
             ->method('findByDoctorId')
             ->willReturn(null);
         $createScheduleRequest = $this->getCreateScheduleRequest();
+        $createScheduleRequest->scheduleDatetime = '2022-12-31 23:59:00';
         $createScheduleUC = $this->getCreateScheduleUC();
         
         // ACT & ASSERT
-        $expectedErrorMessage = "Doctor not found by id:{$createScheduleRequest->doctorId}";
+        $expectedErrorMessage = "Schedule datetime is not in the expected ";
+        $expectedErrorMessage.= "format 'Y-m-d H:i'";
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionMessage($expectedErrorMessage);
+        
+        $createScheduleUC->execute($createScheduleRequest);
+    }
+    
+    public function testWhenDoctorNotExistsShouldThrowsUnprocessableEntityException(): void
+    {
+        // ARRANGE
+        $this->doctorRepositoryMock
+        ->method('findByDoctorId')
+        ->willReturn(null);
+        $createScheduleRequest = $this->getCreateScheduleRequest();
+        $createScheduleUC = $this->getCreateScheduleUC();
+        
+        // ACT & ASSERT
+        $expectedErrorMessage = "Doctor not found by ";
+        $expectedErrorMessage.= "id:{$createScheduleRequest->doctorId}";
+        $this->expectException(UnprocessableEntityException::class);
+        $this->expectExceptionMessage($expectedErrorMessage);
+        
+        $createScheduleUC->execute($createScheduleRequest);
+    }
+    
+    public function testWhenDoctorScheduleNotExistsShouldThrowsUnprocessableEntityException(): void
+    {
+        // ARRANGE
+        $this->doctorRepositoryMock
+            ->method('findByDoctorId')
+            ->willReturn(new Doctor('123'));
+        
+        $this->doctorScheduleRepositoryMock
+            ->method('findSchedule')
+            ->willReturn(null);
+        
+        $createScheduleRequest = $this->getCreateScheduleRequest();
+        $createScheduleUC = $this->getCreateScheduleUC();
+        
+        // ACT & ASSERT
+        $expectedErrorMessage = "Schedule date ";
+        $expectedErrorMessage.= "'{$createScheduleRequest->scheduleDatetime}'";
+        $expectedErrorMessage.= " not found to this doctor";
+        $this->expectException(UnprocessableEntityException::class);
+        $this->expectExceptionMessage($expectedErrorMessage);
+        
+        $createScheduleUC->execute($createScheduleRequest);
+    }
+    
+    public function testWhenDoctorScheduleIsNotAvailableShouldThrowsUnprocessableEntityException(): void
+    {
+        // ARRANGE
+        $doctor = new Doctor('123');
+        $this->doctorRepositoryMock
+            ->method('findByDoctorId')
+            ->willReturn($doctor);
+        
+        $this->doctorScheduleRepositoryMock
+            ->method('findSchedule')
+            ->willReturn(new DoctorSchedule($doctor, new \DateTime(), false));
+        
+        $createScheduleRequest = $this->getCreateScheduleRequest();
+        $createScheduleUC = $this->getCreateScheduleUC();
+        
+        // ACT & ASSERT
+        $expectedErrorMessage = "Schedule date is not available";
         $this->expectException(UnprocessableEntityException::class);
         $this->expectExceptionMessage($expectedErrorMessage);
         

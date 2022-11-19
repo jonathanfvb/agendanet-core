@@ -2,14 +2,14 @@
 
 namespace Agendanet\App\Controllers;
 
-use Exception;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\RequestInterface;
 use Agendanet\App\Commons\Http\Exceptions\BadRequestException;
 use Agendanet\App\Commons\Http\Exceptions\BusinessException;
 use Agendanet\App\Commons\Http\Response\JsonResponse;
 use Agendanet\Domain\Schedule\DTO\CreateScheduleRequest;
 use Agendanet\Domain\Schedule\UseCase\CreateScheduleUC;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Exception;
 
 class PostController
 {
@@ -40,7 +40,7 @@ class PostController
                 'code' => 500,
                 'message' => $e->getMessage()
             ]));
-            $this->response = $this->response->withStatus($e->getCode());
+            $this->response = $this->response->withStatus(500);
         } finally {
             return JsonResponse::send($this->response);
         }
