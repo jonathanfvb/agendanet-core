@@ -44,7 +44,8 @@ $app->get('/', function(Request $request, ResponseInterface $response, $args) {
 $app->post('/schedules', function (Request $request, $args) {
     /** @var PostController $controller */
     $controller = $this->get('PostController');
-    return $controller->createSchedule($request);
+    $res = $controller->createSchedule($request);
+    return $res;
 });
 
 $app->run();
